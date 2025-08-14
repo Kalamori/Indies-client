@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { signUp } from '../../services/authService'
 import { UserContext } from '../../contexts/UserContext'
 
@@ -27,7 +27,7 @@ const SignUpForm = () => {
             setUser(newUser)
             navigate('/')
         } catch (err) {
-            setMessage(err.message)
+            setMessage(err.response?.data?.message || 'Sign up Failed')
         }
     }
 
@@ -44,7 +44,7 @@ const SignUpForm = () => {
             <label htmlFor='username'>Username:</label>
             <input
               type='text'
-              id='name'
+              id='username'
               value={username}
               name='username'
               onChange={handleChange}
@@ -63,10 +63,10 @@ const SignUpForm = () => {
                />
                 </div>
                <div>
-                <label htmlFor="confirm">Confirm Password</label>
+                <label htmlFor="passwordConf">Confirm Password</label>
                 <input 
                 type='password'
-                id='confirm'
+                id='passwordConf'
                 value={passwordConf}
                 name='passwordConf'
                 onChange={handleChange}
