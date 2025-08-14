@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react'
+import { useNavigate } from 'react-router'
 
 const SignUpForm = () => {
     const navigate = useNavigate()
@@ -49,7 +49,7 @@ const SignUpForm = () => {
                id='password'
                value={password}
                name='password'
-               onChnage={handleChange}
+               onChange={handleChange}
                required
                />
                 </div>
@@ -59,6 +59,7 @@ const SignUpForm = () => {
                 type='password'
                 id='confirm'
                 value={passwordConf}
+                name='passwordConf'
                 onChange={handleChange}
                 required
                 />
