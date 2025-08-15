@@ -3,8 +3,7 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/auth`
 
 const signUp = async (formData) => {
      try {
-        console.log('BASE_URL:', BASE_URL)
-        
+
         const res = await fetch(`${BASE_URL}/sign-up`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json'},
@@ -20,7 +19,8 @@ if (!res.ok) {
 if (data.token) {
     localStorage.setItem('token', data.token)
     const decoded = JSON.parse(atob(data.token.split('.')[1]))
-    return decoded.payload
+    return decoded
+    
 }
    throw new Error('Invalid response from server')
  } catch (err) {

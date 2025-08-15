@@ -23,20 +23,20 @@ const SignUpForm = () => {
         setErrors({ ...errors, [evt.target.name]: '' })
     }
 
-    const handleSubmit = async (evt) => {
-        evt.preventDefault()
-        setErrors({})
-        
-        try {
-            const newUser = await signUp(formData)
-            setUser(newUser)
-            navigate('/')
-        } catch (err) {
-            const response = err.response?.data
-          if (response) {
-            setErrors(response)
-        } else {
-          setErrors({ general: 'Sign up Failed. Please try again.'})
+   const handleSubmit = async (evt) => {
+  evt.preventDefault()
+  setErrors({})
+
+  try {
+    const newUser = await signUp(formData)
+    setUser(newUser.user)
+    navigate('/')   
+  } catch (err) {
+    const response = err.response?.data
+    if (response) {
+      setErrors(response)
+    } else {
+      setErrors({ general: 'Sign up Failed. Please try again.' })
     }
   }
 }
