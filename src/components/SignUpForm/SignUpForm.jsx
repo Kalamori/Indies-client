@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signUp } from '../../services/authService'
-import { UserContext } from '../../contexts/UserContext'
+import { AuthContext } from '../../contexts/AuthContext'
 
 const SignUpForm = () => {
     const navigate = useNavigate()
-    const { setUser } = useContext(UserContext)
+    const { setUser } = useContext(AuthContext)
 
     const [formData, setFormData] = useState({
         username: '',

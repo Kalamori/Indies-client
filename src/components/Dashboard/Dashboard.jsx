@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../contexts/UserContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import { index as fetchUsers } from '../../services/userService'
 
 const Dashboard = () => {
-    const { user } = useContext(UserContext)
+    const { user } = useContext(AuthContext)
     const [users, setUsers] = useState([])
     const [error, setError] = useState([])
 
