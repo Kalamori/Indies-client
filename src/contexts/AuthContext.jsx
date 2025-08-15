@@ -1,31 +1,39 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { getToken, setToken, removeToken } from '../utils/auth'
 
 const AuthContext = createContext()
 
-function AuthProvider({ children }) {
-    const [user, setUser] = useState(() => {
-        const token = localStorage.getItem('token')
-        if (!token) return null
-        const decoded = JSON.parse(atob(token.split(".")[1]))
-        return decoded.user || decoded
-    })
-    const [token, setToken] = useState(() => localStorage.getItem("token") || "")
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
 
-    const login = (token) => {
-        const decoded = JSON.parse(atob(token.split(".")[1]))
-        setToken(token)
-        setUser(decoded.user || decoded)
+useEffect(() => {
+  const token = getToken()
+  if (token) {
+    try {
+      const decoded = JSON.parse(atob(token.split('.')[1]))
+      setUser({ ...decoded, token })
+    } catch {
+      removeToken()
     }
-    const logout = () => {
-        localStorage.removeItem("token")
-        setToken("")
-        setUser(null)
-    }
-    return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    )
+  }
+}, [])
+
+const login = (token) => {
+  setToken(token)
+  const decoded = JSON.parse(atob(token.split('.')[1]))
+  setUser({ ...decoded, token })
 }
 
-export { AuthProvider, AuthContext }
+  const logout = () => {
+    removeToken()
+    setUser(null)
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export const useAuth = () => useContext(AuthContext)
