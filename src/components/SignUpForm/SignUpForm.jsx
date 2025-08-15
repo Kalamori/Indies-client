@@ -29,8 +29,8 @@ const SignUpForm = () => {
 
   try {
     const newUser = await signUp(formData)
-    setUser(newUser.user)
-    navigate('/')   
+    setUser(newUser)
+    navigate('/dashboard')   
   } catch (err) {
     const response = err.response?.data
     if (response) {

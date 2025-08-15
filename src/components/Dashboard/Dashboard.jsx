@@ -25,7 +25,7 @@ const Dashboard = () => {
             <h2>All Users:</h2>
             <ul>
                 {users.map((u) => (
-                    <li key={u._.id}>{u.username}</li>
+                    <li key={u._id}>{u.username}</li>
                 ))}
             </ul>
         </main>
