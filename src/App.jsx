@@ -4,6 +4,7 @@ import SignUpForm from './components/SignUpForm/SignUpForm'
 import Home from './pages/Home'
 import Dashboard from './components/Dashboard/Dashboard'
 import './App.css'
+import PrivateRoute from './components/Routes/PrivateRoute'
 
 const App = () => {
 
@@ -13,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/sign-up' element={<SignUpForm />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       </Routes>
     </>
   )
