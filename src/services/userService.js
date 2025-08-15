@@ -26,3 +26,5 @@ const index = async () => {
         throw new Error(err.message)
     }
 }
+
+export { index }
