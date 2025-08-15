@@ -1,7 +1,10 @@
+import axios from 'axios'
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/auth`
 
 const signUp = async (formData) => {
      try {
+        console.log('BASE_URL:', BASE_URL)
+        
         const res = await fetch(`${BASE_URL}/sign-up`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json'},
@@ -11,7 +14,7 @@ const signUp = async (formData) => {
 const data = await res.json()
 
 if (!res.ok) {
-    throw new Error(data.message || 'Sign up Failed')
+    throw new Error(JSON.stringify(data))
 }
 
 if (data.token) {
@@ -20,12 +23,13 @@ if (data.token) {
     return decoded.payload
 }
    throw new Error('Invalid response from server')
- } catch (error) {
-    console.log(error)
-    throw new Error(error)
+ } catch (err) {
+    console.log(err)
+    if (!err.response) {
+        err.response = { data: { general: err.message }}
+    }
+    throw err
   }
 }
 
-export {
-  signUp
-}
+export { signUp }

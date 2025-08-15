@@ -6,36 +6,40 @@ import { UserContext } from '../../contexts/UserContext'
 const SignUpForm = () => {
     const navigate = useNavigate()
     const { setUser } = useContext(UserContext)
-    const [message, setMessage] = useState('')
+
     const [formData, setFormData] = useState({
         username: '',
+        email: '',
         password: '',
         passwordConfirmation: '',
     })
 
+    const [errors, setErrors] = useState({})
+
     const { username, password, passwordConfirmation } = formData
 
     const handleChange = (evt) => {
-        setMessage('')
         setFormData({ ...formData, [evt.target.name]: evt.target.value })
+        setErrors({ ...errors, [evt.target.name]: '' })
     }
 
     const handleSubmit = async (evt) => {
         evt.preventDefault()
+        setErrors({})
         
-        if (password !== passwordConfirmation) {
-            setMessage("Passwords don't match")
-            return
-        }
-
         try {
             const newUser = await signUp(formData)
             setUser(newUser)
             navigate('/')
         } catch (err) {
-            setMessage(err.message)
-        }
+            const response = err.response?.data
+          if (response) {
+            setErrors(response)
+        } else {
+          setErrors({ general: 'Sign up Failed. Please try again.'})
     }
+  }
+}
 
     const isFormInvalid = () => {
         return !(username && password && passwordConfirmation && password === passwordConfirmation)
@@ -44,7 +48,9 @@ const SignUpForm = () => {
     return (
        <main>
         <h1>Sign up</h1>
-        <p style={ {color: 'red'}}>{message}</p>
+        
+        {errors.general && <p className="error">{errors.general}</p>}
+        
         <form onSubmit={handleSubmit}>
         <div>
             <label htmlFor='username'>Username:</label>
@@ -55,8 +61,23 @@ const SignUpForm = () => {
               name='username'
               onChange={handleChange}
               required 
-            />            
+            />
+            {errors.username && <p className="error">{errors.username}</p>}            
             </div>
+
+            <div>
+                <label htmlFor="email">Email:</label>
+                <input 
+                type="email" 
+                id="email"
+                value={formData.email || ''}
+                name="email"
+                onChange={handleChange}
+                required
+                />
+                {errors.email && <p className="error">{errors.email}</p>}
+            </div>
+
             <div>
                <label htmlFor="password">Password:</label>
                <input
@@ -67,7 +88,9 @@ const SignUpForm = () => {
                onChange={handleChange}
                required
                />
+               {errors.password && <p className="error">{errors.password}</p>}
                 </div>
+
                <div>
                 <label htmlFor="passwordConfirmation">Confirm Password</label>
                 <input 
@@ -78,12 +101,11 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 required
                 />
+                {errors.passwordConfirmation && <p className="error">{errors.passwordConfirmation}</p>}
                 </div>
                 <div>
                   <button type="submit" disabled={isFormInvalid()}>Sign Up</button>
-                  <button 
-                  type="button"
-                  onClick={() => navigate('/')}>Cancel</button>  
+                  <button type="button" onClick={() => navigate('/')}>Cancel</button>  
                     </div>     
         </form>
         </main>
